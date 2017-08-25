@@ -1,6 +1,5 @@
 # Copy configuration template
 
-
 echo "$1"
 mkdir -p /gitea/data/gitea/conf/
 if [ ! -e /gitea/data/gitea/conf/app.ini ]; then
@@ -11,7 +10,6 @@ fi
 if [ ! -e /data/git ]; then
     mkdir -p /gitea/data/git
 fi
-
 
 # Generate secret key
 generate_secret_key=$(grep SECRET_KEY /gitea/data/gitea/conf/app.ini | grep generate | wc -l)

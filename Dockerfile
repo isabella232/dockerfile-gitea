@@ -5,12 +5,7 @@ ENV GITEA_APP_DIR=/opt/app/gitea
 
 EXPOSE 22 3000
 
-
 VOLUME ["/gitea/data"]
-
-ENTRYPOINT ["/usr/bin/entrypoint"]
-CMD ["/bin/s6-svscan", "/etc/s6"]
-
 
 USER root
 RUN mkdir -p /gitea/data/gitea
@@ -31,12 +26,14 @@ RUN chgrp -R 0 ${GITEA_APP_DIR}
 RUN chmod -R g+r ${GITEA_APP_DIR}
 RUN chmod 555 ${GITEA_APP_DIR}/gitea
 
-
+# TODO: what is this?
 ENV GODEBUG=netdns=go
 
 
 ADD docker-entrypoint /usr/bin/docker-entrypoint
 ADD app.ini /tmp/app.ini
 
+# Combining ENTRYPOINT and CMD allows you to specify the default executable for your image while also providing default
+# arguments to that executable which may be overridden by the user
 CMD ["/bin/bash","/usr/bin/docker-entrypoint"]
 ENTRYPOINT []
