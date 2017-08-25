@@ -4,11 +4,13 @@ echo "$1"
 mkdir -p /gitea/data/gitea/conf/
 if [ ! -e /gitea/data/gitea/conf/app.ini ]; then
     cp /tmp/app.ini /gitea/data/gitea/conf/app.ini
+    echo "Copied app.ini"
 fi
 
 # Create git directory
 if [ ! -e /data/git ]; then
     mkdir -p /gitea/data/git
+    echo "Created /data/git directory"
 fi
 
 # Generate secret key
@@ -16,6 +18,7 @@ generate_secret_key=$(grep SECRET_KEY /gitea/data/gitea/conf/app.ini | grep gene
 if [ "$generate_secret_key" = "1" ]; then
     secret_key=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9_' | fold -w 10 | head -n 1)
     sed -i "s/^SECRET_KEY.*$/SECRET_KEY   = ${secret_key}/" /gitea/data/gitea/conf/app.ini
+    echo "Generated secret key"
 fi
 
 # Generate lfs jwt secret
@@ -23,6 +26,7 @@ generate_lfs_jwt_secret=$(grep LFS_JWT_SECRET /gitea/data/gitea/conf/app.ini | g
 if [ "$generate_lfs_jwt_secret" = "1" ]; then
     lfs_jwt_secret=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9_' | fold -w 43 | head -n 1)
     sed -i "s/^LFS_JWT_SECRET.*$/LFS_JWT_SECRET   = ${lfs_jwt_secret}/" /gitea/data/gitea/conf/app.ini
+    echo "Generated lfs jwt secret"
 fi
 
 # Update root url
@@ -31,6 +35,7 @@ if [ ! -z $GITEA_HOSTNAME ]; then
         PROTOCOL="http"
     fi
     sed -i "s,^ROOT_URL.*$,ROOT_URL         = ${PROTOCOL}://${GITEA_HOSTNAME}," /data/gitea/conf/app.ini
+    echo "Updated root url"
 fi
 
 # Run gitea
@@ -40,3 +45,5 @@ echo "Starting Gitea"
 ls -l /opt/app/gitea/gitea
 
 /opt/app/gitea/gitea web
+
+echo "Started web!"

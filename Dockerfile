@@ -7,6 +7,7 @@ EXPOSE 22 3000
 
 VOLUME ["/gitea/data"]
 
+# TODO these commands should be combined into one!
 USER root
 RUN mkdir -p /gitea/data/gitea
 RUN mkdir -p ${GITEA_APP_DIR}
