@@ -29,3 +29,6 @@ PATH     = /data/gitea/gitea.db
 ## ToDos
 
 - [ ] change database to postgres
+- [ ] disable registration
+- [ ] create default system admin automatically at startup
+- [ ] add keycloak openid connect configurations by default; so, user must have option to login using openid connect
